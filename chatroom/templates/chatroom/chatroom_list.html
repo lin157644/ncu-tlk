@@ -1,0 +1,33 @@
+{% extends "../base.html" %}
+
+{% block content %}
+    <h1>Public Chatroom List</h1>
+    <p>Input room id:</p>
+    <input id="room-id-input" type="text" size="200">
+    <input id="room-id-submit" type="button" value="Submit">
+
+    <script>
+        document.querySelector('#room-id-input').focus();
+        document.querySelector('#room-id-input').onkeyup = e => {
+            if (e.keyCode === 13) {  // 13: enter
+                document.querySelector('#room-id-input').click();
+            }
+        };
+
+        document.querySelector('#room-id-input').onclick = e => {
+            let roomId = document.querySelector('#room-id-input').value;
+            window.location.pathname = '/chats/' + roomId + '/';
+        };
+    </script>
+    {% if chatroom_list %}
+        <ul>
+            {% for chatroom in chatroom_list %}
+                <li>
+                    <a href="{{ chatroom.get_absolute_url }}">{{ chatroom.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven't joined any list.</p>
+    {% endif %}
+{% endblock %}

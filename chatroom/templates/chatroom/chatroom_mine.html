@@ -1,0 +1,17 @@
+{% extends "../base.html" %}
+
+{% block content %}
+    <h1>Currently joined chatrooms</h1>
+
+    {% if chatroom_list %}
+        <ul>
+
+            {% for chatroom in chatroom_list %}
+                <a href="{% url 'chat-detail' chatroom.pk %}">{{ chatroom.name }}</a>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        <p>You haven't joined any chats.</p>
+    {% endif %}
+{% endblock %}

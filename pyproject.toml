@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "net-db-mid"
+version = "0.1.0"
+description = ""
+authors = ["LXS_TW <19168554+lin157644@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "net_db_mid"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.1.3"
+authlib = "^1.1.0"
+channels = {extras = ["daphne"], version = "^4.0.0"}
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.10.1"
+pylint = "^2.15.5"
+black = "^22.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
