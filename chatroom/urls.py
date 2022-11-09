@@ -8,4 +8,6 @@ urlpatterns = [
     path("list/", views.ChatroomListView.as_view(), name='chat-list'),
     path("mine/", views.ChatroomOfUserListView.as_view(), name="my-chats"),
     re_path(r'^(?P<pk>\d+)/$', views.ChatroomDetailView.as_view(), name='chat-detail'),
+    path('login/', views.login, name='auth_login'),
+    path('auth/', views.auth, name='auth'),
 ]

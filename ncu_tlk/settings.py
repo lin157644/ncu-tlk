@@ -123,24 +123,13 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# OAuth2 Settings
-OAUTH_URL_WHITELISTS = []
-
-OAUTH_CLIENT_NAME = 'ncu'
-
-OAUTH_CLIENT = {
-    'client_id': '20221108123625JOZFR9IRPbxH',
-    'client_secret': 'dJZFdqzT4sSOMXIKQowzQTKJMTWmxazMiW5pDN9VLESWmV0bQV3',
-    'access_token_url': 'https://portal.ncu.edu.tw/oauth2/token',
-    'authorize_url': 'https://portal.ncu.edu.tw/oauth2/authorization',
-    'api_base_url': 'https://api.github.com/',
-    'redirect_uri': 'https://localhost/oauth/callback',
-    'client_kwargs': {
-        'scope': 'profile email',
-        'token_placement': 'header'
-    },
-    'userinfo_endpoint': 'user',
-}
+# AUTHLIB CLIENTS
+# AUTHLIB_OAUTH_CLIENTS = {
+#     'ncu': {
+#         'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+#         'client_secret': os.getenv('GOOGLE_CLIENT_SECRET'),
+#     }
+# }
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
