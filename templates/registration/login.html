@@ -6,32 +6,40 @@
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
 
-    {% if next %}
-        {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-                please login with an account that has access.</p>
-        {% else %}
-            <p>Please login to see this page.</p>
+    <div class="flex flex-col items-center justify-center">
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.</p>
+            {% else %}
+                <p class="text-lg my-3">Please login to view this page.</p>
+            {% endif %}
         {% endif %}
-    {% endif %}
+        <div class="max-w-sm rounded bg-slate-700 p-3 shadow-lg">
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td>{{ form.username.label_tag }}</td>
+                        <td>{{ form.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password.label_tag }}</td>
+                        <td>{{ form.password }}</td>
+                    </tr>
+                </table>
+                {# Assumes you setup the password_reset view in your URLconf #}
+                <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+                <div class="flex flex-col items-center">
+                    <input class="mx-4 my-2 rounded bg-slate-500 px-2 py-1 text-slate-50 hover:bg-slate-400"
+                           type="submit"
+                           value="Login">
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <div class="my-2 rounded border-2 border-slate-800 bg-slate-300 px-2 py-1 font-semibold">Log in with ncu portal</div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
-        <input class="text-slate-50" type="submit" value="login">
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
-
-    {# Assumes you setup the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 
 {% endblock %}
