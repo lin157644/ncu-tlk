@@ -1,13 +1,14 @@
-from django.http import Http404
-from django.shortcuts import render, redirect
-from django.views import generic
-from .models import Chatroom
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
 import json
 
 from authlib.integrations.django_client import OAuth
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views import generic
+
+from .models import Chatroom
 
 # CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 oauth = OAuth()
@@ -64,8 +65,13 @@ class ChatroomOfUserListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Chatroom.objects.filter(user=self.request.user).order_by('created_at')
 
+def createChatroom(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        pass
+    return render(request, 'create.html')
 
-# def chatroom_detail_view(request, primary_key):
+
 #     try:
 #         book = Chatroom.objects.get(pk=primary_key)
 #     except Chatroom.DoesNotExist:
@@ -73,8 +79,6 @@ class ChatroomOfUserListView(LoginRequiredMixin, generic.ListView):
 #
 #     # from django.shortcuts import get_object_or_404
 #     # book = get_object_or_404(Book, pk=primary_key)
-#
-#     return render(request, 'catalog/book_detail.html', context={'book': book})
 
 
 # @login_required
