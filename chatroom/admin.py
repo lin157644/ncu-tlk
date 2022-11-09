@@ -23,4 +23,4 @@ class ChatroomAdmin(admin.ModelAdmin):
 # admin.site.register(Message)
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('content', 'created_at')
+    list_display = ('id', 'content', 'created_at', 'chatroom')

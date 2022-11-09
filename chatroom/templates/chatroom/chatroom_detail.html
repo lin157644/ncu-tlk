@@ -1,19 +1,24 @@
-{% extends "../base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-    <div class=" bg-dark-card rounded h-100">
+    <div class="bg-dark-card rounded h-100">
         <div class="h-100">
             <h1 class="text-slate-50 ps-3 py-2 mb-0 rounded-t bg-slate-700 text-lg">{{ chatroom.name }}</h1>
             <div id="chat-content-wrapper" class="bg-slate-800 scrollbar">
                 <div class="d-flex justify-content-center align-items-center py-3">
-                    <button type="button" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded">Load more messages</button>
+                    <button id="load-msg" type="button"
+                            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded">Load more
+                        messages
+                    </button>
                 </div>
                 <ol id="chat-content" class="list-group p-3"></ol>
             </div>
             <div class="input-group rounded-b mb-3">
-                <input id="chat-input" type="text" class="form-control rounded-b" placeholder="Recipient's username"
-                       aria-label="Recipient's username" aria-describedby="button-addon2">
-                <input id="chat-submit" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded" type="button" id="button-addon2" value="Send">
+                <input id="chat-input" type="text" class="form-control rounded-b" placeholder="Type your message here"
+                       aria-label="" aria-describedby="">
+                <input id="chat-submit"
+                       class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded" type="button"
+                       value="Send">
             </div>
         </div>
     </div>
@@ -34,10 +39,31 @@
 
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            const chatItem = document.createElement("li")
-            chatItem.append(data.message)
-            chatItem.className = "list-group-item bg-slate-600 text-slate-50"
-            chatContent.appendChild(chatItem)
+            if (data.type === 'load_msg') {
+                console.log(data.message.length)
+                if (data.message.length === 0) {
+                    document.querySelector('#load-msg').className += " hidden"
+                } else {
+                    console.log(data.message.reverse()[0]["msg"])
+                    data.message.reverse().forEach((item, index) => {
+                        console.log(item)
+                        let chatItem = document.createElement("li")
+                        chatItem.append(item['msg'])
+                        chatItem.className = "list-group-item bg-slate-600 text-slate-50"
+                        chatItem.dataset.msgId = item['id']
+                        chatContent.insertBefore(chatItem, chatContent.firstChild)
+
+                    })
+                }
+            } else {
+                let chatItem = document.createElement("li")
+                chatItem.append(data.message)
+                chatItem.className = "list-group-item bg-slate-600 text-slate-50"
+                chatItem.dataset.msgId = data.msgId
+                chatContent.appendChild(chatItem)
+            }
+
+            chatContentWrapper.scrollTop = chatContentWrapper.scrollHeight;
         };
 
         chatSocket.onclose = function (e) {
@@ -51,15 +77,28 @@
             }
         };
 
-        document.querySelector('#chat-submit').onclick = function (e) {
-            chatContentWrapper.scrollTop = chatContentWrapper.scrollHeight;
+        document.querySelector('#load-msg').onclick = function (e) {
+            const firstId = document.querySelector("#chat-content").firstChild
+            console.log(`firstId: ${firstId ? firstId.dataset.msgId : 9999}`)
 
-            const chatInput = document.querySelector('#chat-input');
-            const message = chatInput.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'load_msg': true,
+                'before_id': firstId ? firstId.dataset.msgId : 9999,
+                'message': ""
             }));
-            chatInput.value = '';
+        };
+
+        document.querySelector('#chat-submit').onclick = function (e) {
+            const chatInput = document.querySelector('#chat-input');
+            const message = chatInput.value.trim();
+            if(message !== ""){
+                chatSocket.send(JSON.stringify({
+                    'load_msg': false,
+                    'before_id': 0,
+                    'message': message
+                }));
+                chatInput.value = '';
+            }
         };
     </script>
 {% endblock %}

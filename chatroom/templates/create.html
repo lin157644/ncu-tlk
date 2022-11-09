@@ -1,4 +1,4 @@
-{% extends "../base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
     <h1>Public Chatroom List</h1>
@@ -12,13 +12,13 @@
 
     <script>
         document.querySelector('#room-id-input').focus();
-        document.querySelector('#room-id-input').onkeyup = e => {
+        document.querySelector('#room-id-input').onkeyup = function(e) {
             if (e.keyCode === 13) {  // 13: enter
                 document.querySelector('#room-id-input').click();
             }
         };
 
-        document.querySelector('#room-id-input').onclick = e => {
+        document.querySelector('#room-id-input').onclick = function(e) {
             let roomId = document.querySelector('#room-id-input').value;
             window.location.pathname = '/chats/' + roomId + '/';
         };

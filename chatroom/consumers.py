@@ -25,22 +25,56 @@ class ChatConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
 
-        Message.objects.create(content=message, chatroom_id=self.chat_id)
+        if text_data_json['load_msg']:
+            msgs = Message.objects.filter(id__lt=int(text_data_json['before_id']),
+                                          chatroom_id=self.chat_id).order_by('-id')[:5]
+            msg_list = []
+            for msg in msgs:
+                msg_list.append({"id": msg.id, "msg": msg.content})
+            print('load_msg before', text_data_json['before_id'])
+            print(msg_list)
 
-        async_to_sync(self.channel_layer.group_send)(
-            self.chat_name,
-            {
-                'type': 'chat_message',
-                'message': message
-            }
-        )
+            self.send(text_data=json.dumps({
+                'type': 'load_msg',
+                'message': msg_list,
+            }))
+
+            # async_to_sync(self.channel_layer.send)(
+            #     self.chat_name,
+            #     {
+            #         'type': 'load_msg',
+            #         'message': msg_list
+            #     }
+            # )
+        else:
+            print('message')
+            message = text_data_json['message']
+
+            msg = Message.objects.create(content=message, chatroom_id=self.chat_id)
+
+            async_to_sync(self.channel_layer.group_send)(
+                self.chat_name,
+                {
+                    'type': 'chat_message',
+                    'message': message,
+                    'msgId': msg.id
+                }
+            )
 
     def chat_message(self, event):
         message = event['message']
         datetime_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         self.send(text_data=json.dumps({
-            'message': f'{datetime_str}:{message}'
+            'msg_type': event['type'],
+            'message': f'{datetime_str}:{message}',
+            'msgId': event['msgId']
+        }))
+
+    def load_msg(self, event):
+        print(123123123)
+        self.send(text_data=json.dumps({
+            'msg_type': event['type'],
+            'message': event["message"],
         }))
