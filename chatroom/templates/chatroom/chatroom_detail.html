@@ -1,31 +1,36 @@
 {% extends "base.html" %}
 
+{% block title %}
+<title>{{ chatroom.name }}</title>
+{% endblock %}
+
 {% block content %}
-    <div class="bg-dark-card rounded h-100">
+    <div class="rounded bg-dark-card h-100">
         <div class="h-100">
-            <h1 class="text-slate-50 ps-3 py-2 mb-0 rounded-t bg-slate-700 text-lg">{{ chatroom.name }}</h1>
+            <h1 class="mb-0 rounded-t bg-slate-700 py-2 text-lg text-slate-50 ps-3">{{ chatroom.name }}</h1>
             <div id="chat-content-wrapper" class="bg-slate-800 scrollbar">
-                <div class="d-flex justify-content-center align-items-center py-3">
+                <div class="py-3 d-flex justify-content-center align-items-center">
                     <button id="load-msg" type="button"
-                            class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded">Load more
+                            class="rounded bg-slate-600 px-2 py-2 font-bold text-slate-50 hover:bg-slate-700">Load more
                         messages
                     </button>
                 </div>
-                <ol id="chat-content" class="list-group p-3"></ol>
+                <ol id="chat-content" class="list-none p-3 list-group"></ol>
             </div>
-            <div class="input-group rounded-b mb-3">
-                <input id="chat-input" type="text" class="form-control rounded-b" placeholder="Type your message here"
+            <div class="mb-3 rounded-b input-group">
+                <input id="chat-input" type="text" class="rounded-b form-control" placeholder="Type your message here"
                        aria-label="" aria-describedby="">
                 <input id="chat-submit"
-                       class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded" type="button"
+                       class="rounded bg-slate-600 px-2 py-2 font-bold text-slate-50 hover:bg-slate-700" type="button"
                        value="Send">
             </div>
         </div>
     </div>
-    {{ chatroom.name|json_script:"chatroom_name" }}
+{% endblock %}
+
+{% block script %}
     {{ chatroom.id|json_script:"chatroom_id" }}
     <script>
-        const chatName = JSON.parse(document.getElementById('chatroom_name').textContent);
         const chatId = JSON.parse(document.getElementById('chatroom_id').textContent);
         const chatContent = document.querySelector("#chat-content")
         const chatContentWrapper = document.querySelector("#chat-content-wrapper")
@@ -52,7 +57,7 @@
                         console.log(item)
                         let chatItem = document.createElement("li")
                         chatItem.append(item['msg'])
-                        chatItem.className = "list-group-item bg-slate-600 text-slate-50"
+                        chatItem.className = "bg-slate-600 text-slate-50 list-group-item"
                         chatItem.dataset.msgId = item['id']
                         chatContent.insertBefore(chatItem, chatContent.firstChild)
 
@@ -63,8 +68,9 @@
             } else {
                 let chatItem = document.createElement("li")
                 chatItem.append(data.message)
-                chatItem.className = "list-group-item bg-slate-600 text-slate-50"
+                chatItem.className = "bg-slate-600 text-slate-50 list-group-item"
                 chatItem.dataset.msgId = data.msgId
+
                 chatContent.appendChild(chatItem)
                 chatContentWrapper.scrollTop = chatContentWrapper.scrollHeight;
             }
