@@ -1,0 +1,26 @@
+{% extends "../base.html" %}
+
+{% block content %}
+    <h1>Public Chatroom List</h1>
+    <p>Input room id:</p>
+    <div class="input-group rounded-b mb-3">
+        <input id="room-id-input" type="text" class="form-control rounded" placeholder="Recipient's username"
+               aria-label="Recipient's username" aria-describedby="button-addon2">
+        <input id="room-id-submit" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded"
+               type="button" id="button-addon2" value="Submit">
+    </div>
+
+    <script>
+        document.querySelector('#room-id-input').focus();
+        document.querySelector('#room-id-input').onkeyup = e => {
+            if (e.keyCode === 13) {  // 13: enter
+                document.querySelector('#room-id-input').click();
+            }
+        };
+
+        document.querySelector('#room-id-input').onclick = e => {
+            let roomId = document.querySelector('#room-id-input').value;
+            window.location.pathname = '/chats/' + roomId + '/';
+        };
+    </script>
+{% endblock %}

@@ -1,5 +1,46 @@
 .sidebar-nav {
-    margin-top: 20px;
-    padding: 0;
+    padding: 5px 10px;
     list-style: none;
+}
+
+p,label,li {
+    color: white;
+}
+
+#chat-content-wrapper {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: calc( 100% - 38px - 1.375rem - 1.5vw - 20px);
+}
+
+html {
+    background-color: #f4f3f1;
+    box-sizing: border-box;
+}
+
+ol {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #364153;
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #20293a;
+  }
 }

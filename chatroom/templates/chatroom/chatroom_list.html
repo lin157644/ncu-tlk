@@ -1,33 +1,24 @@
 {% extends "../base.html" %}
 
 {% block content %}
-    <h1>Public Chatroom List</h1>
-    <p>Input room id:</p>
-    <input id="room-id-input" type="text" size="200">
-    <input id="room-id-submit" type="button" value="Submit">
-
-    <script>
-        document.querySelector('#room-id-input').focus();
-        document.querySelector('#room-id-input').onkeyup = e => {
-            if (e.keyCode === 13) {  // 13: enter
-                document.querySelector('#room-id-input').click();
-            }
-        };
-
-        document.querySelector('#room-id-input').onclick = e => {
-            let roomId = document.querySelector('#room-id-input').value;
-            window.location.pathname = '/chats/' + roomId + '/';
-        };
-    </script>
-    {% if chatroom_list %}
-        <ul>
+    <div class="bg-slate-800 rounded mb-3">
+        <h1 class="text-center text-2xl text-white py-3 font-extrabold">Public Chatroom List</h1>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+        {% if chatroom_list %}
             {% for chatroom in chatroom_list %}
-                <li>
-                    <a href="{{ chatroom.get_absolute_url }}">{{ chatroom.name }}</a>
-                </li>
+                <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-500 flex justify-center">
+                    {# <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> #}
+                    <div class="px-6 py-4">
+                        <a href="{{ chatroom.get_absolute_url }}" class="font-bold text-xl mb-2">{{ chatroom.name }}</a>
+                        <p class="text-gray-700 text-base">
+                            {{ chatroom.summary }}
+                        </p>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>You haven't joined any list.</p>
-    {% endif %}
+        {% else %}
+            <p>You haven't joined any list.</p>
+        {% endif %}
+    </div>
 {% endblock %}

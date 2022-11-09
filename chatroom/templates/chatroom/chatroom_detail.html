@@ -1,32 +1,43 @@
 {% extends "../base.html" %}
 
 {% block content %}
-    <h1>Name: {{ chatroom.name }}</h1>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-input" type="text" size="100"><br>
-    <input id="chat-submit" type="button" value="Send">
+    <div class=" bg-dark-card rounded h-100">
+        <div class="h-100">
+            <h1 class="text-slate-50 ps-3 py-2 mb-0 rounded-t bg-slate-700 text-lg">{{ chatroom.name }}</h1>
+            <div id="chat-content-wrapper" class="bg-slate-800 scrollbar">
+                <div class="d-flex justify-content-center align-items-center py-3">
+                    <button type="button" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded">Load more messages</button>
+                </div>
+                <ol id="chat-content" class="list-group p-3"></ol>
+            </div>
+            <div class="input-group rounded-b mb-3">
+                <input id="chat-input" type="text" class="form-control rounded-b" placeholder="Recipient's username"
+                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                <input id="chat-submit" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded" type="button" id="button-addon2" value="Send">
+            </div>
+        </div>
+    </div>
     {{ chatroom.name|json_script:"chatroom_name" }}
     {{ chatroom.id|json_script:"chatroom_id" }}
-{#    <p>{% url 'chat-ws' %}</p>#}
-
     <script>
         const chatName = JSON.parse(document.getElementById('chatroom_name').textContent);
         const chatId = JSON.parse(document.getElementById('chatroom_id').textContent);
-        const chatTextarea = document.querySelector('#chat-log');
+        const chatContent = document.querySelector("#chat-content")
+        const chatContentWrapper = document.querySelector("#chat-content-wrapper")
 
         const chatSocket = new WebSocket(
             `${(window.location.protocol === 'https:') ? 'wss://' : 'ws://'}${window.location.host}/ws/chat/${chatId}/`
         );
 
         chatSocket.onopen = function (e) {
-            chatTextarea.value += (`Welcome to ${chatName}!\n`)
-            {#document.querySelector('#chat-log').value += (`Welcome to {chatId}!`)#}
         }
 
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
-            chatTextarea.value += (data.message + '\n');
-            {#document.querySelector('#chat-log').value += (data.message + '\n');#}
+            const chatItem = document.createElement("li")
+            chatItem.append(data.message)
+            chatItem.className = "list-group-item bg-slate-600 text-slate-50"
+            chatContent.appendChild(chatItem)
         };
 
         chatSocket.onclose = function (e) {
@@ -41,6 +52,8 @@
         };
 
         document.querySelector('#chat-submit').onclick = function (e) {
+            chatContentWrapper.scrollTop = chatContentWrapper.scrollHeight;
+
             const chatInput = document.querySelector('#chat-input');
             const message = chatInput.value;
             chatSocket.send(JSON.stringify({
