@@ -77,37 +77,12 @@ class ChatroomOfUserListView(LoginRequiredMixin, generic.ListView):
 #     return render(request, 'catalog/book_detail.html', context={'book': book})
 
 
-@login_required
-def my_view(request):
-    pass
-
+# @login_required
+# def my_view(request):
+#     pass
 
 def home(request):
     user = request.session.get('user')
     if user:
         user = json.dumps(user)
     return render(request, 'home.html', context={'user': user})
-
-
-def login(request):
-    redirect_uri = request.build_absolute_uri(reverse('auth'))
-    return oauth.ncu.authorize_redirect(request, redirect_uri)
-
-
-def auth(request):
-    token = oauth.ncu.authorize_access_token(request)
-    resp = oauth.ncu.get('info', token=token)
-    resp.raise_for_status()
-    data = resp.json()
-    print(data)
-    id = data["id"]
-    print(token)
-    # request.session['user'] = token['access_token']
-    print(f"requset: {request}")
-    print(f"resp= {resp}")
-    return redirect('/')
-
-
-def logout(request):
-    request.session.pop('user', None)
-    return redirect('/')
