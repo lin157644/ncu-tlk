@@ -29,12 +29,15 @@
         const chatId = JSON.parse(document.getElementById('chatroom_id').textContent);
         const chatContent = document.querySelector("#chat-content")
         const chatContentWrapper = document.querySelector("#chat-content-wrapper")
+        const chatInput = document.querySelector('#chat-input');
+        chatInput.disabled = true
 
         const chatSocket = new WebSocket(
             `${(window.location.protocol === 'https:') ? 'wss://' : 'ws://'}${window.location.host}/ws/chat/${chatId}/`
         );
 
         chatSocket.onopen = function (e) {
+            chatInput.disabled = false
         }
 
         chatSocket.onmessage = function (e) {
@@ -54,6 +57,8 @@
                         chatContent.insertBefore(chatItem, chatContent.firstChild)
 
                     })
+
+                    chatContentWrapper.scrollTop = 0
                 }
             } else {
                 let chatItem = document.createElement("li")
@@ -61,12 +66,13 @@
                 chatItem.className = "list-group-item bg-slate-600 text-slate-50"
                 chatItem.dataset.msgId = data.msgId
                 chatContent.appendChild(chatItem)
+                chatContentWrapper.scrollTop = chatContentWrapper.scrollHeight;
             }
 
-            chatContentWrapper.scrollTop = chatContentWrapper.scrollHeight;
         };
 
         chatSocket.onclose = function (e) {
+            chatInput.disabled = true
             console.error('Chat socket closed unexpectedly');
         };
 
@@ -89,9 +95,8 @@
         };
 
         document.querySelector('#chat-submit').onclick = function (e) {
-            const chatInput = document.querySelector('#chat-input');
             const message = chatInput.value.trim();
-            if(message !== ""){
+            if (message !== "") {
                 chatSocket.send(JSON.stringify({
                     'load_msg': false,
                     'before_id': 0,

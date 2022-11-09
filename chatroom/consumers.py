@@ -39,14 +39,6 @@ class ChatConsumer(WebsocketConsumer):
                 'type': 'load_msg',
                 'message': msg_list,
             }))
-
-            # async_to_sync(self.channel_layer.send)(
-            #     self.chat_name,
-            #     {
-            #         'type': 'load_msg',
-            #         'message': msg_list
-            #     }
-            # )
         else:
             print('message')
             message = text_data_json['message']
@@ -70,11 +62,4 @@ class ChatConsumer(WebsocketConsumer):
             'msg_type': event['type'],
             'message': f'{datetime_str}:{message}',
             'msgId': event['msgId']
-        }))
-
-    def load_msg(self, event):
-        print(123123123)
-        self.send(text_data=json.dumps({
-            'msg_type': event['type'],
-            'message': event["message"],
         }))
