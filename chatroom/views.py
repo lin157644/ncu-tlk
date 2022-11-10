@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views import generic
 
 from .models import Chatroom
-from .forms import CreateChatForm
+from .forms import CreateChatForm, UpdateChatFrom
 
 from django.shortcuts import get_object_or_404
 
@@ -72,18 +72,31 @@ def create_chatroom(request):
         if form.is_valid():
             chatroom = Chatroom.objects.create(
                 name=form.cleaned_data["name"], is_public=False, created_by=request.user)
-            return HttpResponseRedirect(reverse('chat-detail', kwargs={"pk": chatroom.id}))
+            return HttpResponseRedirect(chatroom.get_absolute_url())
     else:
         form = CreateChatForm()
     return render(request, 'create.html', {'form': form})
 
 
 @login_required
-def update_chatroom(request):
-    if request.method == "POST":
-        form = CreateChatForm(request.POST)
-        pass
-    return render(request, 'create.html')
+def update_chatroom(request, name):
+    # TODO: Very bad code
+    if Chatroom.objects.filter(name=name, created_by=request.user).exists():
+        if request.method == "POST":
+            form = UpdateChatFrom(request.POST)
+            print("Good")
+            if form.is_valid():
+                Chatroom.objects.filter(name=name, created_by=request.user).update(
+                    name=form.cleaned_data["name"], summary=form.cleaned_data["summary"],
+                    is_public=form.cleaned_data["public"])
+                chatroom = Chatroom.objects.get(name=form.cleaned_data["name"], created_by=request.user)
+                return HttpResponseRedirect(chatroom.get_absolute_url())
+        else:
+            form = UpdateChatFrom()
+
+        return render(request, 'update.html', {'form': form, 'name': name})
+    else:
+        return redirect('index')
 
 
 def home(request):
