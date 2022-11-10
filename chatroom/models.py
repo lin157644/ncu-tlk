@@ -7,13 +7,15 @@ class Chatroom(models.Model):
     """Chatroom model"""
 
     # Fields
+    # Helper text for form model
     name = models.CharField(
-        max_length=255, help_text="Enter name of the chatroom"
+        max_length=255, help_text="Enter name of the chatroom", null=False
     )
     summary = models.TextField(max_length=1000, help_text="Enter summary of the chatroom")
     user = models.ManyToManyField(User, related_name="chatroom_as_member")
     is_public = models.BooleanField(default=False, help_text="Choose whether the chatroom should be public")
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chatroom_as_owner")
+    is_anonymous = models.BooleanField(default=False, help_text="Choose whether the chatroom should be anonymous")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chatroom_as_owner", null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     # @property

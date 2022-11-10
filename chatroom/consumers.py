@@ -2,7 +2,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import datetime
-from .models import Message
+from .models import Message, Chatroom
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -27,6 +27,7 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
 
         if text_data_json['load_msg']:
+            # is_anonymous = Chatroom.objects.get(id=self.chat_id).is_anonymous
             msgs = Message.objects.filter(id__lt=int(text_data_json['before_id']),
                                           chatroom_id=self.chat_id).order_by('-id')[:5]
             msg_list = []

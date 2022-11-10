@@ -1,26 +1,55 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <h1>Public Chatroom List</h1>
-    <p>Input room id:</p>
-    <div class="input-group rounded-b mb-3">
-        <input id="room-id-input" type="text" class="form-control rounded" placeholder="Recipient's username"
-               aria-label="Recipient's username" aria-describedby="button-addon2">
-        <input id="room-id-submit" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded"
-               type="button" id="button-addon2" value="Submit">
-    </div>
+{% block title %}<title>Create new chat</title>{% endblock %}
 
+{% block content %}
+    <div class="flex flex-col items-center">
+        <p class="text-2xl text-center py-3">Create new chat:</p>
+        <div class="max-w-lg rounded overflow-hidden shadow-lg bg-slate-600 w-80 m-3 px-4 py-3">
+            <form action="{% url 'chat-create' %}" method="post">
+                {% csrf_token %}
+                {#        <div class="input-group rounded-b mb-3">#}
+                {#            <input id="room-id-input" type="text" class="form-control rounded" placeholder="chat name" name="name"#}
+                {#                   aria-label="Recipient's username" aria-describedby="button-addon2">#}
+                {#            <input id="room-id-submit" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded"#}
+                {#                   type="submit" id="button-addon2" value="Submit">#}
+                {#        </div>#}
+                {{ form.name.help_text }}
+                <div class="mb-3">
+                    {% if form.name.errors %}
+                        <ol>
+                            {% for error in form.name.errors %}
+                                <li><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control rounded-l-lg border-slate-800 border-1"
+                               placeholder="Chat name" name="name"
+                               pattern="[0-9A-Za-z_-]{3,}">
+                        <button class="btn btn-outline-secondary bg-slate-300 hover:bg-slate-500 border-slate-800 border-1"
+                                type="submit" id="button-addon2">Create
+                        </button>
+                    </div>
+                    <div class="flex items-center pl-1">
+                        <input checked id="anonymous-checkbox" type="checkbox" value="" name="anonymous"
+                               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="anonymous-checkbox" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Anonymous?</label>
+                    </div>
+                    {#            <label for="chat-name" class="form-label">Chat name:</label>#}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
     <script>
         document.querySelector('#room-id-input').focus();
-        document.querySelector('#room-id-input').onkeyup = function(e) {
+        document.querySelector('#room-id-input').onkeyup = function (e) {
             if (e.keyCode === 13) {  // 13: enter
                 document.querySelector('#room-id-input').click();
             }
-        };
-
-        document.querySelector('#room-id-input').onclick = function(e) {
-            let roomId = document.querySelector('#room-id-input').value;
-            window.location.pathname = '/chats/' + roomId + '/';
         };
     </script>
 {% endblock %}

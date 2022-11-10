@@ -3,32 +3,13 @@ import json
 from authlib.integrations.django_client import OAuth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import generic
 
 from .models import Chatroom
-
-# CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
-oauth = OAuth()
-oauth.register(
-    name='ncu',
-    client_id='20221108123625JOZFR9IRPbxH',
-    client_secret='dJZFdqzT4sSOMXIKQowzQTKJMTWmxazMiW5pDN9VLESWmV0bQV3',
-    # (採用 POST Method, 需要以 Client Id/Client Secret 做為 Basic Auth 的帳號密碼, 另外在 request header 上要 Accept: application/json)
-    access_token_url='https://portal.ncu.edu.tw/oauth2/token',
-    access_token_params=None,
-    authorize_url='https://portal.ncu.edu.tw/oauth2/authorization',
-    authorize_params=None,
-    api_base_url='https://portal.ncu.edu.tw/apis/oauth/v1/info',
-    client_kwargs={'scope': 'id, identifier, chinese-name',
-                   'token_endpoint_auth_method': 'client_secret_post'
-                   },
-    # server_metadata_url=CONF_URL,
-)
-
-# ncu = oauth.create_client('ncu')
+from .forms import CreateChatForm
 
 
 def index(request):
@@ -65,9 +46,29 @@ class ChatroomOfUserListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Chatroom.objects.filter(user=self.request.user).order_by('created_at')
 
-def createChatroom(request):
+
+def show_chatroom_by_name(request):
+    # TODO
+    pass
+
+
+@login_required
+def create_chatroom(request):
     if request.method == "POST":
-        form = ContactForm(request.POST)
+        form = CreateChatForm(request.POST)
+        if form.is_valid():
+            chatroom = Chatroom.objects.create(
+                name=form.cleaned_data["name"], is_public=False, created_by=request.user)
+            return HttpResponseRedirect(reverse('chat-detail', kwargs={"pk": chatroom.id}))
+    else:
+        form = CreateChatForm()
+    return render(request, 'create.html', {'form': form})
+
+
+@login_required
+def update_chatroom(request):
+    if request.method == "POST":
+        form = CreateChatForm(request.POST)
         pass
     return render(request, 'create.html')
 
@@ -79,11 +80,6 @@ def createChatroom(request):
 #
 #     # from django.shortcuts import get_object_or_404
 #     # book = get_object_or_404(Book, pk=primary_key)
-
-
-# @login_required
-# def my_view(request):
-#     pass
 
 def home(request):
     user = request.session.get('user')
