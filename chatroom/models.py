@@ -18,6 +18,9 @@ class Chatroom(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chatroom_as_owner", null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def get_absolute_url(self):
+        return reverse('chat-detail-name', kwargs={"name": self.name})
+
     # @property
     # def is_overdue(self):
     #     """Determines if the book is overdue based on due date and current date."""
@@ -26,11 +29,6 @@ class Chatroom(models.Model):
     class Meta:
         """Meta definition for Chatroom."""
         ordering = ["-created_at", "name"]
-
-    # Methods
-    def get_absolute_url(self):
-        """Returns the url to access a particular instance of Chatroom."""
-        return reverse("chat-detail", args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Chatroom object (in Admin site etc.)."""

@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>Chatroom list</title>
+    <title>Chatroom list</title>
 {% endblock %}
 
 {% block content %}
     <div class="bg-slate-800 rounded mb-3">
         <h1 class="text-center text-2xl text-white py-3 font-extrabold">Public Chatroom List</h1>
     </div>
-    <div class="flex flex-row flex-wrap justify-around scrollbar">
+    <div class="flex flex-row flex-wrap justify-around scrollbar overflow-y-scroll">
         {% if chatroom_list %}
             {% for chatroom in chatroom_list %}
                 <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-500 w-80 m-3">
-                    {# <img class="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains"> #}
                     <div class="px-6 py-4">
-                        <a href="{{ chatroom.get_absolute_url }}" class="font-bold text-xl mb-2">{{ chatroom.name }}</a>
+                        <a href="{{ chatroom.get_absolute_url }}"
+                           class="font-bold text-xl mb-2">{{ chatroom.name }}</a>
                         <p class="text-gray-700 text-base">
                             {{ chatroom.summary }}
                         </p>
@@ -22,7 +22,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>You haven't joined any list.</p>
+            <p>You haven't joined any chat yet...</p>
         {% endif %}
     </div>
 {% endblock %}

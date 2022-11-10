@@ -11,6 +11,8 @@ from django.views import generic
 from .models import Chatroom
 from .forms import CreateChatForm
 
+from django.shortcuts import get_object_or_404
+
 
 def index(request):
     return render(request, 'index.html')
@@ -40,16 +42,27 @@ class ChatroomDetailView(LoginRequiredMixin, generic.DetailView):
 
 class ChatroomOfUserListView(LoginRequiredMixin, generic.ListView):
     model = Chatroom
-    template_name = 'chatroom/templates/chatroom/chatroom_mine.html'
+    template_name = 'chatroom/chatroom_mine.html'
     paginate_by = 10
 
     def get_queryset(self):
         return Chatroom.objects.filter(user=self.request.user).order_by('created_at')
 
 
-def show_chatroom_by_name(request):
-    # TODO
-    pass
+def show_chatroom(request, name):
+    chatroom = get_object_or_404(Chatroom, name=name)
+    if request.user.is_authenticated:
+        chatroom.user.add(request.user)
+    return render(request, 'chatroom/chatroom_detail.html', {'chatroom': chatroom})
+
+
+def delete_mine_chatroom(request, name):
+    chatroom = get_object_or_404(Chatroom, name=name)
+
+    if request.method == 'POST':
+        chatroom.user.remove(request.user)
+
+    return redirect('my-chats')
 
 
 @login_required
@@ -72,14 +85,6 @@ def update_chatroom(request):
         pass
     return render(request, 'create.html')
 
-
-#     try:
-#         book = Chatroom.objects.get(pk=primary_key)
-#     except Chatroom.DoesNotExist:
-#         raise Http404('Book does not exist')
-#
-#     # from django.shortcuts import get_object_or_404
-#     # book = get_object_or_404(Book, pk=primary_key)
 
 def home(request):
     user = request.session.get('user')

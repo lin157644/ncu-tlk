@@ -19,12 +19,12 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("chatroom/", include("chatroom.urls")),
+    path("", include("chatroom.urls")),
 ]
 
-urlpatterns += [
-    path('', RedirectView.as_view(url='/chatroom/')),
-]
+# urlpatterns += [
+#     path('', RedirectView.as_view(url='/chatroom/')),
+# ]
 
 # accounts/ login/ [name='login']
 # accounts/ logout/ [name='logout']

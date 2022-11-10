@@ -1,17 +1,32 @@
-{% extends "../base.html" %}
+{% extends "base.html" %}
+
+{% block title %}
+<title>My Chatroom list</title>
+{% endblock %}
 
 {% block content %}
-    <h1>Currently joined chatrooms</h1>
-
-    {% if chatroom_list %}
-        <ul>
-
+    <div class="bg-slate-800 rounded mb-3">
+        <h1 class="text-center text-2xl text-white py-3 font-extrabold">Public Chatroom List</h1>
+    </div>
+    <div class="flex flex-row flex-wrap justify-around scrollbar">
+        {% if chatroom_list %}
             {% for chatroom in chatroom_list %}
-                <a href="{% url 'chat-detail' chatroom.pk %}">{{ chatroom.name }}</a>
+                <div class="max-w-sm rounded overflow-hidden shadow-lg bg-slate-500 w-80 m-3">
+{#                    <a href="{% url 'chat-detail-name' chatroom.name %}">{{ chatroom.name }}</a>#}
+                    <a href="{{ chatroom.get_absolute_url }}" class="font-bold text-xl mb-2">{{ chatroom.name }}</a>
+                    <div class="px-6 py-4">
+                        <p class="text-gray-700 text-base">
+                            {{ chatroom.summary }}
+                        </p>
+                    </div>
+                    <form action="{% url 'delete-my-chat' chatroom.name %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Remove">
+                    </form>
+                </div>
             {% endfor %}
-        </ul>
-
-    {% else %}
-        <p>You haven't joined any chats.</p>
-    {% endif %}
+        {% else %}
+            <p>You haven't joined any chat yet...</p>
+        {% endif %}
+    </div>
 {% endblock %}
