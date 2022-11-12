@@ -20,7 +20,7 @@ class NCUAccount(ProviderAccount):
 
 class NCUProvider(OAuth2Provider):
     id = "ncu"
-    name = "ncu"
+    name = "NCU"
     account_class = NCUAccount
 
     def get_default_scope(self):

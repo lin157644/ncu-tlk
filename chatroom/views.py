@@ -3,6 +3,7 @@ import json
 from authlib.integrations.django_client import OAuth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ValidationError
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -70,8 +71,8 @@ def create_chatroom(request):
     if request.method == "POST":
         form = CreateChatForm(request.POST)
         if form.is_valid():
-            chatroom = Chatroom.objects.create(
-                name=form.cleaned_data["name"], is_public=False, created_by=request.user)
+            chatroom = Chatroom.objects.create(is_anonymous=form.cleaned_data.get("anonymous"),
+                                               name=form.cleaned_data["name"], is_public=False, created_by=request.user)
             return HttpResponseRedirect(chatroom.get_absolute_url())
     else:
         form = CreateChatForm()
@@ -84,15 +85,17 @@ def update_chatroom(request, name):
     if Chatroom.objects.filter(name=name, created_by=request.user).exists():
         if request.method == "POST":
             form = UpdateChatFrom(request.POST)
-            print("Good")
             if form.is_valid():
+                if form.cleaned_data['name'] != name and Chatroom.objects.filter(name__exact=form.cleaned_data['name']).exists():
+                    raise ValidationError(_('Chat name already exist'))
                 Chatroom.objects.filter(name=name, created_by=request.user).update(
                     name=form.cleaned_data["name"], summary=form.cleaned_data["summary"],
                     is_public=form.cleaned_data["public"])
                 chatroom = Chatroom.objects.get(name=form.cleaned_data["name"], created_by=request.user)
                 return HttpResponseRedirect(chatroom.get_absolute_url())
         else:
-            form = UpdateChatFrom()
+            chatroom = Chatroom.objects.get(name=name, created_by=request.user)
+            form = UpdateChatFrom(initial={"name": name, "summary": chatroom.summary, "public": chatroom.is_public})
 
         return render(request, 'update.html', {'form': form, 'name': name})
     else:

@@ -66,7 +66,7 @@ class ChatConsumer(WebsocketConsumer):
                 self.chat_name,
                 {
                     'type': 'chat_message',
-                    'message': message,
+                    'message': msg,
                     'msgId': msg.id,
                 }
             )
@@ -77,6 +77,6 @@ class ChatConsumer(WebsocketConsumer):
 
         self.send(text_data=json.dumps({
             'msg_type': event['type'],
-            'message': f'{datetime_str} {self.user}: {message}',
+            'message': f'{datetime_str} {message.createc_by if message.createc_by else "AnonymousUser"}: {message.content}',
             'msgId': event['msgId']
         }))

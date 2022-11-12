@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -66,7 +66,9 @@ ROOT_URLCONF = "ncu_tlk.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ['./templates'],
+        "DIRS": [os.path.join(BASE_DIR, 'templates'),
+                 os.path.join(BASE_DIR, 'templates', 'allauth'),
+                 ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -167,8 +169,11 @@ ACCOUNT_LOGOUT_ON_GET = True
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 
+# Bypass confirmation page
+SOCIALACCOUNT_LOGIN_ON_GET=True
+
 # SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
+#     'ncu': {
 #         # For each OAuth based provider, either add a ``SocialApp``
 #         # (``socialaccount`` app) containing the required client
 #         # credentials, or list them here:

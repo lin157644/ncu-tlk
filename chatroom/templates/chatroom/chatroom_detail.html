@@ -19,6 +19,7 @@
 
 {% block content %}
     {#  TODO: fix scrollbar #}
+    <div class="hidden"></div>
     <div class="grow flex-col items-stretch rounded">
         <div class="mb-0 rounded-t bg-slate-700 py-2 pl-3 flex justify-between">
             <h1 class="text-lg text-2xl font-bold text-slate-50">{{ chatroom.name }}</h1>
@@ -68,7 +69,7 @@
             if (data.type === 'load_msg') {
                 console.log(data.message.length)
                 if (data.message.length === 0) {
-                    loadMsgBtn.className += " hidden"
+                    loadMsgBtn.style.display = "none"
                 } else {
                     {#console.log(data.message.reverse()[0]["msg"])#}
                     data.message.reverse().forEach((item, index) => {

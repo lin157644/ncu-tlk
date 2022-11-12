@@ -14,7 +14,7 @@ class Chatroom(models.Model):
     summary = models.TextField(max_length=1000, help_text="Enter summary of the chatroom", null=True)
     user = models.ManyToManyField(User, related_name="chatroom_as_member")
     is_public = models.BooleanField(default=False, help_text="Choose whether the chatroom should be public", null=False)
-    is_anonymous = models.BooleanField(default=True, help_text="Choose whether the chatroom should be anonymous",
+    is_anonymous = models.BooleanField(help_text="Choose whether the chatroom should be anonymous",
                                        null=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="chatroom_as_owner", null=False)
     created_at = models.DateTimeField(auto_now_add=True)
