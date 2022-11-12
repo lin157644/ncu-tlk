@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -172,15 +173,14 @@ LOGIN_REDIRECT_URL = '/'
 # Bypass confirmation page
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'ncu': {
-#         # For each OAuth based provider, either add a ``SocialApp``
-#         # (``socialaccount`` app) containing the required client
-#         # credentials, or list them here:
-#         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
-#             'key': ''
-#         }
-#     }
-# }
+load_dotenv()
+
+SOCIALACCOUNT_PROVIDERS = {
+    'ncu': {
+        'APP': {
+            'client_id': os.getenv('NCU_CLIENT_ID'),
+            'secret': os.getenv('NCU_CLIENT_SECRET'),
+            'key': ''
+        }
+    }
+}
