@@ -8,17 +8,18 @@
     <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
         <section class="bg-gray-50 dark:bg-gray-900">
-            <div class="flex flex-col items-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-                    <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <div class="mx-auto flex flex-col items-center px-6 py-8 md:h-screen lg:py-0">
+                <div class="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
+                    <div class="p-6 space-y-4 sm:p-8 md:space-y-6">
+                        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
                             Sign up a new account
                         </h1>
                         <form class="space-y-4 md:space-y-6" method="POST" action="{% url 'account_login' %}">
                             {% csrf_token %}
                             <div>
 
-                                <label for="id_username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User
+                                <label for="id_username"
+                                       class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">User
                                     name</label>
                                 <input type="text" name="username" id="id_username"
                                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -26,7 +27,8 @@
                                 <p class="text-red-600">{{ form.errors.username.as_text }}</p>
                             </div>
                             <div>
-                                <label for="id_email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">E-mail
+                                <label for="id_email"
+                                       class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">E-mail
                                     (optional)</label>
                                 <input type="email" name="email" id="id_email"
                                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -35,7 +37,7 @@
                             </div>
                             <div>
                                 <label for="id_password1"
-                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                       class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Password</label>
                                 <input type="password" name="password1" id="id_password1" placeholder="••••••••"
                                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                        required="" autocomplete="current-password">
@@ -43,7 +45,8 @@
                             </div>
                             <div>
                                 <label for="id_password2"
-                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm Password</label>
+                                       class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Confirm
+                                    Password</label>
                                 <input type="password" name="password2" id="id_password2" placeholder="••••••••"
                                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                        required="" autocomplete="new-password">

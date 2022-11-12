@@ -4,8 +4,8 @@
 
 {% block content %}
     <div class="flex flex-col items-center">
-        <p class="text-2xl text-center py-3">Create new chat:</p>
-        <div class="max-w-lg rounded overflow-hidden shadow-lg bg-slate-600 w-80 m-3 px-4 py-3">
+        <p class="py-3 text-center text-2xl">Create new chat:</p>
+        <div class="m-3 w-80 max-w-lg overflow-hidden rounded bg-slate-600 px-4 py-3 shadow-lg">
             <form action="{% url 'chat-update' name=name %}" method="post">
                 {% csrf_token %}
                 {{ form.name.help_text }}
@@ -17,34 +17,35 @@
                             {% endfor %}
                         </ol>
                     {% endif %}
-                    <div class="input-group my-1">
-                        <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Your
+                    <div class="my-1 input-group">
+                        <label for="search" class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your
                             Email</label>
                         <div class="relative">
-                            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                             </div>
                             <input type="text" id="search" value="{{ form.name.value }}"
-                                   class="block p-4 w-full text-sm rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   class="block w-full rounded-lg border border-gray-300 p-4 text-sm focus:border-blue-500 focus:ring-blue-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                                    name="name" placeholder="Chat name" pattern="[0-9A-Za-z_-]{3,}" required>
 
                             <label for="message"
-                                   class="block mt-3 pl-1 mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Summary</label>
+                                   class="mt-3 mb-2 block pl-1 text-sm font-medium text-gray-900 dark:text-gray-400">Summary</label>
                             <textarea id="message" rows="4" name="summary"
                                       class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                       placeholder="Summary of the chat...">{{ form.summary.value }}</textarea>
 
                         </div>
                     </div>
-                    <div class="flex items-center mb-2">
+                    <div class="mb-2 flex items-center">
                         <div class="grow">
-                            <input {% if form.public.value %} checked {% endif %} id="public-checkbox" type="checkbox" value="public" name="public"
-                                   class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <input {% if form.public.value %} checked {% endif %} id="public-checkbox" type="checkbox"
+                                                              value="public" name="public"
+                                                              class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800">
                             <label for="public-checkbox"
                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Public?</label>
                         </div>
                     </div>
                     <button type="submit"
-                            class="self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            class="self-end rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:hover:bg-blue-700 dark:focus:ring-blue-800 dark:bg-blue-600">
                         Update
                     </button>
                 </div>

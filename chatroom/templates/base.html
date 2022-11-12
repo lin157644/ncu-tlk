@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     {% block style %}{% endblock %}
 </head>
-<body class="bg-slate-900 h-screen">
-<div class="grid grid-cols-12 grid-rows-4 lg:grid-rows-1 gap-3 p-3 h-full">
+<body class="h-screen bg-slate-900">
+<div class="grid h-full grid-cols-12 grid-rows-4 gap-3 p-3 lg:grid-rows-1">
     {% block sidebar %}
-        <div class="col-span-12 lg:col-span-3 row-span-1">
-            <ul class="list-none bg-slate-700 px-3 py-2 sidebar-nav rounded">
+        <div class="col-span-12 row-span-1 lg:col-span-3">
+            <ul class="list-none rounded bg-slate-700 px-3 py-2 sidebar-nav">
                 <li class="my-1"><a class="rounded bg-slate-700 px-2 py-1 d-block w-100 hover:bg-slate-500" href="{% url 'index' %}">Home</a>
                 </li>
                 <li class="my-1"><a class="whitespace-nowrap rounded bg-slate-700 px-2 py-1 d-block w-100 hover:bg-slate-500" href="{% url 'chat-list' %}">All chatrooms</a></li>
@@ -34,20 +34,20 @@
         </div>
     {% endblock %}
     {# Grid item has min-w-auto and min-h-auto by default.#}
-    <div class="col-span-12 lg:col-span-9 row-span-3 h-full flex flex-col min-h-0 min-w-0 lg:row-span-1">
+    <div class="col-span-12 row-span-3 flex h-full min-h-0 min-w-0 flex-col lg:col-span-9 lg:row-span-1">
         {% block content %}{% endblock %}
         {% block pagination %}
             {% if is_paginated %}
-                <div class="pagination flex justify-center h-10 mt-2">
-                        <span class="page-linksrounded flex items-stretch">
+                <div class="mt-2 flex h-10 justify-center pagination">
+                        <span class="flex items-stretch page-linksrounded">
                             {% if page_obj.has_previous %}
-                                <a class="bg-slate-500 rounded-l py-2 px-2" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a>
+                                <a class="rounded-l bg-slate-500 px-2 py-2" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a>
                             {% endif %}
-                            <span class="page-current bg-slate-300 py-2 px-2 rounded-l">
+                            <span class="rounded-l bg-slate-300 px-2 py-2 page-current">
                                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
                             </span>
                             {% if page_obj.has_next %}
-                                <a class="bg-slate-500 rounded-r py-2 px-2" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a>
+                                <a class="rounded-r bg-slate-500 px-2 py-2" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a>
                             {% endif %}
                         </span>
                 </div>

@@ -4,14 +4,14 @@
 
 {% block content %}
     <div class="flex flex-col items-center">
-        <p class="text-2xl text-center py-3">Create new chat:</p>
-        <div class="max-w-lg rounded overflow-hidden shadow-lg bg-slate-600 w-80 m-3 px-4 py-3">
+        <p class="py-3 text-center text-2xl">Create new chat:</p>
+        <div class="m-3 w-80 max-w-lg overflow-hidden rounded bg-slate-600 px-4 py-3 shadow-lg">
             <form action="{% url 'chat-create' %}" method="post">
                 {% csrf_token %}
-                {#        <div class="input-group rounded-b mb-3">#}
-                {#            <input id="room-id-input" type="text" class="form-control rounded" placeholder="chat name" name="name"#}
+                {#        <div class="mb-3 rounded-b input-group">#}
+                {#            <input id="room-id-input" type="text" class="rounded form-control" placeholder="chat name" name="name"#}
                 {#                   aria-label="Recipient's username" aria-describedby="button-addon2">#}
-                {#            <input id="room-id-submit" class="bg-slate-600 hover:bg-slate-700 text-slate-50 font-bold py-2 px-2 rounded"#}
+                {#            <input id="room-id-submit" class="rounded bg-slate-600 px-2 py-2 font-bold text-slate-50 hover:bg-slate-700"#}
                 {#                   type="submit" id="button-addon2" value="Submit">#}
                 {#        </div>#}
                 {{ form.name.help_text }}
@@ -23,14 +23,14 @@
                             {% endfor %}
                         </ol>
                     {% endif %}
-                    <div class="input-group mb-3">
-                        <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">Your
+                    <div class="mb-3 input-group">
+                        <label for="search" class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your
                             Email</label>
                         <div class="relative">
-                            <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                             </div>
                             <input type="text" id="search"
-                                   class="block p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                                    name="name" placeholder="Chat name" pattern="[0-9A-Za-z_-]{3,}" required>
                             <button type="submit"
                                     class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -40,7 +40,7 @@
                     </div>
                     <div class="flex items-center pl-1">
                         <input checked id="anonymous-checkbox" type="checkbox" value="anonymous" name="anonymous"
-                               class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                               class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800">
                         <label for="anonymous-checkbox"
                                class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Anonymous?</label>
                     </div>
