@@ -29,6 +29,9 @@ class ChatroomListView(generic.ListView):
     # template_name = 'books/my_arbitrary_template_name_list.html'  # Specify your own template name/location
     paginate_by = 10
 
+    def get_queryset(self):
+        return Chatroom.objects.filter(is_public=True).order_by('created_at')
+
     # def get_context_data(self, **kwargs):
     #     # Call the base implementation first to get the context
     #     context = super(ChatroomListView, self).get_context_data(**kwargs)
