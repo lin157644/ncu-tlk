@@ -2,17 +2,6 @@ p, label, li {
     color: white;
 }
 
-#chat-content-wrapper {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: calc(100% - 38px - 1.375rem - 1.5vw - 20px);
-}
-
-html {
-    background-color: #f4f3f1;
-    box-sizing: border-box;
-}
-
 @layer utilities {
     .scrollbar {
         overflow-y: scroll;
