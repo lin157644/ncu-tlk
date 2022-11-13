@@ -4,23 +4,8 @@
     <title>{{ chatroom.name }}</title>
 {% endblock %}
 
-{% block style %}
-<style>
-.list-group-item:first-child {
-    border-top-right-radius: 0.25rem;
-    border-top-left-radius: 0.25rem;
-}
-.list-group-item:last-child {
-    border-bottom-right-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
-}
-</style>
-{% endblock %}
-
 {% block content %}
-    {#  TODO: fix scrollbar #}
-    <div class="hidden"></div>
-    <div class="grow flex-col items-stretch rounded">
+    <div class="flex h-full grow flex-col items-stretch rounded">
         <div class="mb-0 flex justify-between rounded-t bg-slate-700 py-2 pl-3">
             <h1 class="text-lg text-2xl font-bold text-slate-50">{{ chatroom.name }}</h1>
             <a href="{% url 'chat-update' name=chatroom.name %}" class="mr-2 rounded bg-slate-600 px-2 py-2 font-bold text-slate-50 hover:bg-slate-500">Edit</a>
@@ -72,11 +57,11 @@
                     loadMsgBtn.style.display = "none"
                 } else {
                     {#console.log(data.message.reverse()[0]["msg"])#}
-                    data.message.reverse().forEach((item, index) => {
+                    data.message.forEach((item, index) => {
                         console.log(item)
                         let chatItem = document.createElement("li")
                         chatItem.append(item['msg'])
-                        chatItem.className = "bg-slate-600 px-2 py-1 text-slate-50 list-group-item"
+                        chatItem.className = "odd:bg-slate-600 even:bg-slate-700 px-2 py-1 text-slate-50 first:rounded-t last:rounded-b"
                         chatItem.dataset.msgId = item['id']
                         chatContent.insertBefore(chatItem, chatContent.firstChild)
 
@@ -87,7 +72,7 @@
             } else {
                 let chatItem = document.createElement("li")
                 chatItem.append(data.message)
-                chatItem.className = "bg-slate-600 px-2 py-1 text-slate-50 list-group-item"
+                chatItem.className = "odd:bg-slate-600 even:bg-slate-700 px-2 py-1 text-slate-50 first:rounded-t last:rounded-b"
                 chatItem.dataset.msgId = data.msgId
 
                 chatContent.appendChild(chatItem)

@@ -14,7 +14,7 @@
 <body class="h-screen bg-slate-900">
 <div class="grid h-full grid-cols-12 grid-rows-4 gap-3 p-3 lg:grid-rows-1">
     {% block sidebar %}
-        <div class="col-span-12 row-span-1 lg:col-span-3">
+        <div class="col-span-12 row-span-1 lg:col-span-3 overflow-y-scroll lg:h-full lg:overflow-y-hidden scrollbar">
             <ul class="list-none rounded bg-slate-700 px-3 py-2 sidebar-nav">
                 <li class="my-1"><a class="rounded bg-slate-700 px-2 py-1 d-block w-100 hover:bg-slate-500" href="{% url 'index' %}">Home</a>
                 </li>
