@@ -1,17 +1,16 @@
 [tool.poetry]
-name = "net-db-mid"
+name = "ncu-tlk"
 version = "0.1.0"
 description = ""
 authors = ["LXS_TW <19168554+lin157644@users.noreply.github.com>"]
 readme = "README.md"
-packages = [{include = "net_db_mid"}]
+packages = [{include = "ncu_tlk"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Django = "^4.1.3"
-authlib = "^1.1.0"
+Django = "^4.2.0"
 channels = {extras = ["daphne"], version = "^4.0.0"}
-django-tailwind = "^3.4.0"
+django-tailwind = "^3.5.0"
 django-allauth = "^0.51.0"
 python-dotenv = "^0.21.0"
 

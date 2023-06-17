@@ -77,6 +77,6 @@ class ChatConsumer(WebsocketConsumer):
 
         self.send(text_data=json.dumps({
             'msg_type': event['type'],
-            'message': f'{datetime_str} {message.createc_by if message.createc_by else "AnonymousUser"}: {message.content}',
+            'message': f'{datetime_str} {"AnonymousUser" if message.chatroom.is_anonymous else message.createc_by}: {message.content}',
             'msgId': event['msgId']
         }))

@@ -1,10 +1,5 @@
-from urllib.parse import parse_qsl
-from django.urls import reverse
-from django.utils.http import urlencode
-
 from allauth.account.models import EmailAddress
 from allauth.socialaccount.providers.base import AuthAction, ProviderAccount
-from allauth.socialaccount.providers.base import Provider
 from allauth.socialaccount.providers.oauth2.provider import OAuth2Provider
 
 class Scope(object):

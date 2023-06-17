@@ -16,7 +16,7 @@ class NCUOAuth2Adapter(OAuth2Adapter):
     profile_url = "https://portal.ncu.edu.tw/apis/oauth/v1/info"
 
     def complete_login(self, request, app, token, **kwargs):
-        headers = {'Authorization': 'Bearer '+token.token}
+        headers = {'Authorization': 'Bearer ' + token.token}
         resp = requests.get(
             self.profile_url,
             headers=headers,

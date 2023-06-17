@@ -1,4 +1,4 @@
-# Network and Database Programming Midterm project - Realtime chat app  
+# NCUtlk - Realtime chat app  
 
 ## Installation
 ```
