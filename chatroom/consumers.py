@@ -8,7 +8,7 @@ from .models import Message, Chatroom
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
-        self.chat_name = 'chat_%s' % self.chat_id
+        self.chat_name = f'chat_{self.chat_id}'
         self.user = self.scope["user"]
 
         async_to_sync(self.channel_layer.group_add)(
@@ -18,7 +18,6 @@ class ChatConsumer(WebsocketConsumer):
 
         if self.user.is_anonymous and not Chatroom.objects.get(id=self.chat_id).is_anonymous:
             self.close()
-            # self.send({"accept": True})
 
         self.accept()
 
@@ -31,30 +30,17 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
 
-        # username_str = None
-        # username = self.scope["user"]
-        # if username.is_authenticated():
-        #     username_str = username.username
-        #     print(type(username_str))
-        #     # pdb.set_trace() # optional debugging
-
         if text_data_json['load_msg']:
-            # is_anonymous = Chatroom.objects.get(id=self.chat_id).is_anonymous
             msgs = Message.objects.filter(id__lt=int(text_data_json['before_id']),
                                           chatroom_id=self.chat_id).order_by('-id')[:5]
-            msg_list = []
-            for msg in msgs:
-                msg_list.append({"id": msg.id,
-                                 "msg": f'{msg.created_at:%Y-%m-%d %H:%M:%S} {msg.createc_by if msg.createc_by else "AnonymousUser"}: {msg.content}'})
-            print('load_msg before', text_data_json['before_id'])
-            print(msg_list)
 
             self.send(text_data=json.dumps({
                 'type': 'load_msg',
-                'message': msg_list,
+                'message': [{"id": msg.id,
+                             "msg": f'{msg.created_at:%Y-%m-%d %H:%M:%S} {msg.createc_by if msg.createc_by else "AnonymousUser"}: {msg.content}'}
+                            for msg in msgs],
             }))
         else:
-            print('message')
             message = text_data_json['message']
 
             if self.user.is_anonymous:
